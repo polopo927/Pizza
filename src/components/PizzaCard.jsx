@@ -16,11 +16,11 @@ export const PizzaCard = ({ name, price, imageUrl, sizes, types }) => {
       <h4 className="pizza-block__title">{name}</h4>
       <div className="pizza-block__selector">
         <ul>
-          {types.map((typeId, index) => (
+          {types.map(typeId => (
             <li
-              onClick={() => setActiveType(index)}
-              className={activeType === index ? 'active' : ''}
-              key={index}
+              onClick={() => setActiveType(typeId)}
+              className={activeType === typeId ? 'active' : ''}
+              key={typeId}
             >
               {typePizzas[typeId]}
             </li>
