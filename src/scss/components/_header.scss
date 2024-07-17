@@ -2,7 +2,7 @@
 
 .header {
   border-bottom: 1px solid $gray-line;
-  padding: 40px 0;
+  padding: 20px 0;
 
   .container {
     display: flex;
@@ -27,6 +27,11 @@
 
     p {
       color: #7b7b7b;
+    }
+
+    @media(max-width: 645px) {
+      text-align: center;
+      margin-bottom: 20px;
     }
   }
 }
