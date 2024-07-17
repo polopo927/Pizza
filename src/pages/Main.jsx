@@ -15,10 +15,11 @@ export const Main = () => {
         setPizzas(arr)
         setIsLoading(false)
       })
+      window.scroll(0, 0)
   }, [])
 
   return (
-    <>
+    <div className="container">
       <div className="content__top">
         <Categories />
         <Sort />
@@ -30,6 +31,6 @@ export const Main = () => {
           : pizzas.map(pizza => <PizzaCard key={pizza.id} {...pizza} />)
         }
       </div>
-    </>
+    </div>
   )
 }
