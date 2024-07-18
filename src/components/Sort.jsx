@@ -1,13 +1,15 @@
 import React, { useState } from "react"
 
-export const Sort = () => {
+export const Sort = ({ sortType, onChangeType }) => {
   const [sortOpen, setSortOpen] = useState(false)
-  const [sortActive, setSortActive] = useState(0)
-  const sortLists = ['популярности', 'цене', 'алфавиту']
-  const sortName = sortLists[sortActive]
+  const sortLists = [
+    {name: 'Популярности', sortProperty: 'rating'},
+    {name: 'Цене', sortProperty: 'price'},
+    {name: 'Алфавиту', sortProperty: 'name'},
+  ]
 
   const hiddenSortList = (index) => {
-    setSortActive(index)
+    onChangeType(index)
     setSortOpen(false)
   }
 
@@ -27,19 +29,19 @@ export const Sort = () => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span>{sortName}</span>
+        <span>{sortType.name}</span>
       </div>
       {sortOpen &&
         (<div className="sort__popup">
           <ul>
             {
-              sortLists.map((list, index) => (
+              sortLists.map((obj, index) => (
                 <li
                 key={index}
-                onClick={() => hiddenSortList(index)}
-                className={sortActive === index ? 'active' : ''}
+                onClick={() => hiddenSortList(obj)}
+                className={sortType.sortProperty === obj.sortProperty ? 'active' : ''}
                 >
-                  {list}
+                  {obj.name}
                 </li>
               ))
             }

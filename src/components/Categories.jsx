@@ -1,8 +1,5 @@
-import { useState } from "react"
+export const Categories = ({ categoryId, onClickCategory }) => {
 
-export const Categories = () => {
-
-  const [active, setActive] = useState(0)
   const categories = [
     'Все',
     'Мясные',
@@ -11,9 +8,6 @@ export const Categories = () => {
     'Острые',
     'Закрытые',
   ]
-  const switchActive = (index) => {
-    setActive(index)
-  }
 
   return (
     < div className="categories" >
@@ -21,8 +15,8 @@ export const Categories = () => {
         {categories.map((categorie, index) => (
           <li
             key={index}
-            onClick={() => switchActive(index)}
-            className={active === index ? 'active' : ''}
+            onClick={() => onClickCategory(index)}
+            className={categoryId === index ? 'active' : ''}
           >
             {categorie}
           </li>
