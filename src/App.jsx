@@ -4,21 +4,20 @@ import { NotFoundPages } from './pages/404';
 import { Main } from './pages/Main';
 import './scss/app.scss'
 import { Cart } from './pages/Cart';
+import { useState } from 'react';
 
 function App() {
-
-
+  const [searchValue, setSearchValue] = useState('')
 
   return (
     <div className="wrapper">
-      <Header />
+      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
       <div className="content">
-        
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/Cart" element={<Cart />} />
-            <Route path="*" element={<NotFoundPages />} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<Main searchValue={searchValue}/>} />
+          <Route path="/Cart" element={<Cart />} />
+          <Route path="*" element={<NotFoundPages />} />
+        </Routes>
 
       </div>
     </div>

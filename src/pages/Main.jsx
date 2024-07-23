@@ -3,30 +3,44 @@ import { Categories } from "../components/Categories";
 import { Sort } from "../components/Sort";
 import { PizzaCard } from "../components/pizzaCard";
 import Skeleton from "../components/pizzaCard/SkeletonPizza";
+import { Pagination } from "../pagination";
 
-export const Main = () => {
+export const Main = ({ searchValue }) => {
   const [pizzas, setPizzas] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
   const [categoryId, setCategoryId] = useState(0)
   const [sortType, setSortType] = useState({
     name: 'Популярности',
     sortProperty: 'rating'
   })
 
-  const url = 'https://66965e360312447373c2421d.mockapi.io/pizzas?'
+  const url = `https://66965e360312447373c2421d.mockapi.io/pizzas?page=${currentPage}&limit=4&`
   const category = categoryId > 0 ? `category=${categoryId}` : ''
+  const search = searchValue ? `&search=${searchValue}` : ''
   const sortBy = `&sortBy=${sortType.sortProperty}&order=desc`
+
 
   useEffect(() => {
     setIsLoading(true)
-    fetch(`${url}${category}${sortBy}`)
+    fetch(`${url}${category}${sortBy}${search}`)
       .then(res => res.json()) // приходит массив arr
-      .then((arr) => {
-        setPizzas(arr)
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setPizzas(data)
+        } else {
+          setPizzas([])
+        }
         setIsLoading(false)
       })
     window.scroll(0, 0)
-  }, [categoryId, sortType])
+  }, [categoryId, sortType, searchValue, currentPage])
+
+  const items = pizzas.length > 0
+    ? pizzas.map(pizza => <PizzaCard key={pizza.id} {...pizza} />)
+    : <p>Пиццы не найдено</p>
+
+  const skeletons = [...new Array(8)].map((_, index) => <Skeleton key={index} />)
 
   return (
     <div className="container">
@@ -43,10 +57,11 @@ export const Main = () => {
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
         {isLoading
-          ? [...new Array(8)].map((_, index) => <Skeleton key={index} />)
-          : pizzas.map(pizza => <PizzaCard key={pizza.id} {...pizza} />)
+          ? skeletons
+          : items
         }
       </div>
+      <Pagination onChangePage={number => setCurrentPage(number)} />
     </div>
   )
 }
