@@ -1,4 +1,4 @@
-export const Categories = ({ categoryId, onClickCategory }) => {
+export const Categories = ({ categoryId, onChangeCategory }) => {
 
   const categories = [
     'Все',
@@ -15,7 +15,7 @@ export const Categories = ({ categoryId, onClickCategory }) => {
         {categories.map((categorie, index) => (
           <li
             key={index}
-            onClick={() => onClickCategory(index)}
+            onClick={() => onChangeCategory(index)}
             className={categoryId === index ? 'active' : ''}
           >
             {categorie}

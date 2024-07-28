@@ -6,21 +6,27 @@ import Skeleton from "../components/pizzaCard/SkeletonPizza";
 import { Pagination } from "../pagination";
 import { SearchContext } from "../App";
 
+import { useSelector, useDispatch } from 'react-redux'
+import { setCategoryId } from '../redux/slices/filterSlice'
+
 export const Main = () => {
   const { searchValue } = useContext(SearchContext)
   const [pizzas, setPizzas] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
-  const [categoryId, setCategoryId] = useState(0)
-  const [sortType, setSortType] = useState({
-    name: 'Популярности',
-    sortProperty: 'rating'
-  })
+
+  const dispatch = useDispatch()
+  const { categoryId, sort } = useSelector(state => state.filter)
+  const sortType = sort.sortProperty
 
   const url = `https://66965e360312447373c2421d.mockapi.io/pizzas?page=${currentPage}&limit=4&`
   const category = categoryId > 0 ? `category=${categoryId}` : ''
   const search = searchValue ? `&search=${searchValue}` : ''
-  const sortBy = `&sortBy=${sortType.sortProperty}&order=desc`
+  const sortBy = `&sortBy=${sortType}&order=desc`
+
+  const onChangeCategory = (id) => {
+    dispatch(setCategoryId(id))
+  }
 
 
   useEffect(() => {
@@ -36,6 +42,7 @@ export const Main = () => {
         setIsLoading(false)
       })
     window.scroll(0, 0)
+    // eslint-disable-next-line
   }, [categoryId, sortType, searchValue, currentPage])
 
   const items = pizzas.length > 0
@@ -49,11 +56,10 @@ export const Main = () => {
       <div className="content__top">
         <Categories
           categoryId={categoryId}
-          onClickCategory={(index) => setCategoryId(index)}
+          onChangeCategory={onChangeCategory}
         />
         <Sort
-          sortType={sortType}
-          onChangeType={(index) => setSortType(index)}
+          
         />
       </div>
       <h2 className="content__title">Все пиццы</h2>
